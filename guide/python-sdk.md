@@ -2,13 +2,17 @@
 
 Thin client for the Aicery runtime HTTP API.
 
-## Install (monorepo)
+## Install
+
+```bash
+pip install aicery-sdk
+```
+
+Monorepo development:
 
 ```bash
 pip install -e ./sdk/python
 ```
-
-Published package (`pip install aicery-sdk`) coming soon.
 
 ## Usage
 

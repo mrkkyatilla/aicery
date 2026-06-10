@@ -27,11 +27,13 @@ See [guide/getting-started.md](guide/getting-started.md) for details.
 
 ## SDKs
 
-**Python** (monorepo):
+**Python:**
 
 ```bash
-pip install -e ./sdk/python
+pip install aicery-sdk
 ```
+
+Monorepo dev: `pip install -e ./sdk/python`
 
 ```python
 from aicery_sdk import AiceryClient
@@ -51,7 +53,7 @@ const client = AiceryClient.fromEnv();
 const run = await client.createRun({ agentId: "echo", input: "hello", execute: true });
 ```
 
-Published packages (`pip install aicery-sdk`, `npm install @aicery/sdk`) coming soon.
+Published: [`pip install aicery-sdk`](https://pypi.org/project/aicery-sdk/) · `npm install @aicery/sdk` coming soon
 
 ## Examples
 
