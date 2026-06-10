@@ -1,0 +1,4 @@
+sku,name,qty,reorder_level,warehouse
+SKU-42,Widget Pro,12,50,IST-01
+SKU-17,Cable Pack,200,100,IST-01
+SKU-99,Deprecated Item,3,10,ANK-02

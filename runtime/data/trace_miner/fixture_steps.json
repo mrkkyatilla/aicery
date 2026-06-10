@@ -1,0 +1,36 @@
+{
+  "agent_id": "research",
+  "known_nodes": ["plan", "answer", "dead-step"],
+  "steps": [
+    {
+      "run_id": "11111111-1111-1111-1111-111111111101",
+      "type": "agent",
+      "name": "research.plan",
+      "metadata": {"node": "plan", "usage": {"total_tokens": 30}}
+    },
+    {
+      "run_id": "11111111-1111-1111-1111-111111111101",
+      "type": "agent",
+      "name": "research.answer",
+      "metadata": {"node": "answer", "usage": {"total_tokens": 50}}
+    },
+    {
+      "run_id": "11111111-1111-1111-1111-111111111102",
+      "type": "agent",
+      "name": "research.plan",
+      "metadata": {"node": "plan", "usage": {"total_tokens": 28}}
+    },
+    {
+      "run_id": "11111111-1111-1111-1111-111111111102",
+      "type": "tool",
+      "name": "search_workspace",
+      "metadata": {"duration_ms": 12}
+    },
+    {
+      "run_id": "11111111-1111-1111-1111-111111111103",
+      "type": "agent",
+      "name": "research.answer",
+      "metadata": {"node": "answer", "usage": {"total_tokens": 44}}
+    }
+  ]
+}

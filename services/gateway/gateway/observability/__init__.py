@@ -1,0 +1,1 @@
+"""OpenTelemetry for gateway proxy."""

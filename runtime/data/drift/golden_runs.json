@@ -1,0 +1,63 @@
+[
+  {
+    "id": "research-refund-1",
+    "agent_id": "research",
+    "input_text": "What is our refund policy?",
+    "expected_keywords": ["refund", "policy", "14 days"],
+    "trace_steps": [
+      {
+        "type": "llm",
+        "name": "research.answer",
+        "input_preview": "[{\"role\": \"user\"",
+        "output_preview": "Our refund policy allows returns within 14 days of purchase.",
+        "metadata": {"usage": {"prompt_tokens": 10, "completion_tokens": 12, "total_tokens": 22}}
+      }
+    ]
+  },
+  {
+    "id": "echo-greeting-1",
+    "agent_id": "echo",
+    "input_text": "hello",
+    "expected_keywords": ["hello", "assist"],
+    "trace_steps": [
+      {
+        "type": "llm",
+        "name": "echo.llm",
+        "input_preview": "hello",
+        "output_preview": "Hello! How can I assist you today?",
+        "metadata": {}
+      }
+    ]
+  },
+  {
+    "id": "research-summary-1",
+    "agent_id": "research",
+    "input_text": "Summarize README",
+    "expected_keywords": ["readme", "project", "setup"],
+    "trace_steps": [
+      {
+        "type": "llm",
+        "name": "research.answer",
+        "input_preview": "Summarize README",
+        "output_preview": "The README describes project setup and local development steps.",
+        "metadata": {}
+      }
+    ]
+  },
+  {
+    "id": "broken-prompt-case",
+    "agent_id": "research",
+    "input_text": "What is our refund policy?",
+    "expected_keywords": ["refund", "policy"],
+    "trace_steps": [
+      {
+        "type": "llm",
+        "name": "research.answer",
+        "input_preview": "refund",
+        "output_preview": "I do not know.",
+        "metadata": {}
+      }
+    ],
+    "expect_regression": true
+  }
+]

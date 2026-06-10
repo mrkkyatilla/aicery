@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["agent_id", "min_runs", "run_count", "nodes", "dead_nodes", "visit_pct", "avg_tokens"],
+  "properties": {
+    "agent_id": { "type": "string" },
+    "min_runs": { "type": "integer", "minimum": 0 },
+    "run_count": { "type": "integer", "minimum": 0 },
+    "low_confidence": { "type": "boolean" },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "visits", "visit_pct"],
+        "properties": {
+          "name": { "type": "string" },
+          "visits": { "type": "integer", "minimum": 0 },
+          "visit_pct": { "type": "number", "minimum": 0, "maximum": 100 }
+        }
+      }
+    },
+    "dead_nodes": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "visit_pct": {
+      "type": "object",
+      "additionalProperties": { "type": "number" }
+    },
+    "avg_tokens": { "type": "number", "minimum": 0 },
+    "recommendations": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

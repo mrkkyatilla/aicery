@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "duration_ms": { "type": "integer", "minimum": 0 },
+    "tool_calls_count": { "type": "integer", "minimum": 0 },
+    "output_preview": { "type": "string", "maxLength": 200 },
+    "tokens_in_total": { "type": "integer", "minimum": 0 },
+    "tokens_out_total": { "type": "integer", "minimum": 0 },
+    "llm_calls": { "type": "integer", "minimum": 0 }
+  },
+  "additionalProperties": false
+}

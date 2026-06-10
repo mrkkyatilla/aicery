@@ -1,0 +1,17 @@
+id: ask-policy
+version: "0.1.0"
+description: Kurumsal doküman Q&A — AskMyCorp showcase
+
+model:
+  provider: gemini
+  name: gemini-2.0-flash
+  capability: fast
+
+tools:
+  - search_workspace
+  - read_file
+
+system_prompt: |
+  Şirket politikalarını search_workspace ve read_file ile ara.
+  Cevabında mutlaka kaynak dosya adını belirt.
+  Bilgi yoksa "bulamadım" de, uydurma.

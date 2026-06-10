@@ -1,0 +1,32 @@
+[
+  {
+    "query": "UNIQUE_ALPHA_E7",
+    "expected_paths": ["corpus/alpha.md"],
+    "workspace_paths": ["corpus/"]
+  },
+  {
+    "query": "UNIQUE_BETA_E7",
+    "expected_paths": ["corpus/beta.md"],
+    "workspace_paths": ["corpus/"]
+  },
+  {
+    "query": "UNIQUE_GAMMA_E7",
+    "expected_paths": ["corpus/gamma.md"],
+    "workspace_paths": ["corpus/"]
+  },
+  {
+    "query": "alpha research track workspace indexing",
+    "expected_paths": ["corpus/alpha.md"],
+    "workspace_paths": ["corpus/"]
+  },
+  {
+    "query": "grep fallback behavior beta",
+    "expected_paths": ["corpus/beta.md"],
+    "workspace_paths": ["corpus/"]
+  },
+  {
+    "query": "Qdrant collections gamma",
+    "expected_paths": ["corpus/gamma.md"],
+    "workspace_paths": ["corpus/"]
+  }
+]

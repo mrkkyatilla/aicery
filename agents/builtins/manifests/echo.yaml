@@ -1,0 +1,8 @@
+id: echo
+version: "1.0.0"
+tools: []
+graph: graphs.echo:build_graph
+system_prompt: "You are a helpful assistant."
+model:
+  provider: gemini
+  name: gemini-2.5-flash

@@ -1,0 +1,39 @@
+[project]
+name = "aicery"
+version = "0.0.1"
+description = "AI agent applications runtime"
+readme = "README.md"
+requires-python = ">=3.11"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+src = ["core", "runtime", "agents", "tools", "cli", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+extend-ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"runtime/runtime/adapters/providers/gemini.py" = ["E402"]
+
+[tool.pytest.ini_options]
+testpaths = ["core/tests", "runtime/tests", "agents/tests", "tools/tests", "sdk/python/tests", "tests"]
+# live tests: pytest runtime/tests/live -m live (GEMINI_API_KEY required)
+pythonpath = ["."]
+addopts = "-q"
+asyncio_mode = "auto"
+markers = [
+    "integration: requires docker compose (deselect with -m 'not integration')",
+    "load: requires running API (deselect with -m 'not load')",
+    "live: requires GEMINI_API_KEY (real provider; never run in CI by default)",
+    "e7_recall: E7 P2 golden recall gate (HashEmbedder / in-memory)",
+    "e7_perf: E7 P2 index performance (100 files, may be slow)",
+    "e7_live: E7 live embed recall/perf (GEMINI_API_KEY)",
+    "e7_integration: E7 semantic index integration (requires Qdrant + API)",
+    "rate_limit_integration: Redis 101st->429 test (run last; hammers /v1/agents)",
+    "sse_e2e: SSE client disconnect integration (uses __slow__ mock prefix)",
+    "hot_memory_integration: Redis hot memory (requires HOT_MEMORY_ENABLED on API)",
+    "hitl_postgres: HITL Postgres checkpointer integration (requires API + postgres)",
+    "gateway_policy_e2e: Gateway JWT/RL/max_steps compose integration (requires gateway + API)",
+]

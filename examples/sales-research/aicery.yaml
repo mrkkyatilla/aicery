@@ -1,0 +1,13 @@
+runtime_url: http://localhost:8000
+workspace_id: sales-research-demo
+
+provider:
+  default_capability: fast
+  preferred: gemini
+
+tools_allowlist:
+  - search_workspace
+  - read_file
+
+data_paths:
+  - ./data/leads

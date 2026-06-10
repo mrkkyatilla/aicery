@@ -1,0 +1,33 @@
+{
+  "name": "@aicery/sdk",
+  "version": "0.0.1",
+  "description": "TypeScript client for the Aicery runtime API",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "codegen": "bash scripts/codegen.sh",
+    "build": "npm run codegen && tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:integration": "vitest run --config vitest.integration.config.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "openapi-typescript": "^7.6.1",
+    "typescript": "^5.8.2",
+    "vitest": "^3.0.9"
+  }
+}

@@ -1,0 +1,22 @@
+[project]
+name = "aicery-core"
+version = "0.0.1"
+description = "Aicery domain models and port contracts"
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2.0",
+    "jsonschema>=4.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["core"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"core/events/schemas" = "core/events/schemas"

@@ -1,0 +1,9 @@
+from typing import Protocol
+
+
+class BlobStorePort(Protocol):
+    def put(self, key: str, data: bytes, *, content_type: str = "text/plain") -> str: ...
+
+    def get(self, key: str) -> bytes: ...
+
+    def delete(self, key: str) -> None: ...

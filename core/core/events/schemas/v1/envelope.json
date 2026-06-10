@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aicery.dev/schemas/v1/envelope.json",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "event_id",
+    "subject",
+    "run_id",
+    "timestamp",
+    "payload"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "event_id": { "type": "string", "format": "uuid" },
+    "subject": { "type": "string", "pattern": "^aicery\\.events\\.v1\\." },
+    "run_id": { "type": "string", "format": "uuid" },
+    "workspace_id": { "type": ["string", "null"] },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "payload": { "type": "object" }
+  },
+  "additionalProperties": false
+}

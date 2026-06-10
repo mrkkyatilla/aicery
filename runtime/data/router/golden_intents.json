@@ -1,0 +1,52 @@
+[
+  {
+    "input": "hello",
+    "expected_agent_id": "echo",
+    "allowed_agents": null
+  },
+  {
+    "input": "Summarize README",
+    "expected_agent_id": "research",
+    "allowed_agents": null
+  },
+  {
+    "input": "What does our refund policy say?",
+    "expected_agent_id": "research",
+    "allowed_agents": null
+  },
+  {
+    "input": "ping",
+    "expected_agent_id": "echo",
+    "allowed_agents": null
+  },
+  {
+    "input": "Find files about deployment runbooks",
+    "expected_agent_id": "research",
+    "allowed_agents": null
+  },
+  {
+    "input": "Just echo this back: ok",
+    "expected_agent_id": "echo",
+    "allowed_agents": null
+  },
+  {
+    "input": "Analyze the quarterly report in guide/",
+    "expected_agent_id": "research",
+    "allowed_agents": null
+  },
+  {
+    "input": "hi there",
+    "expected_agent_id": "echo",
+    "allowed_agents": null
+  },
+  {
+    "input": "Search workspace for API latency runbook",
+    "expected_agent_id": "research",
+    "allowed_agents": null
+  },
+  {
+    "input": "test",
+    "expected_agent_id": "echo",
+    "allowed_agents": null
+  }
+]

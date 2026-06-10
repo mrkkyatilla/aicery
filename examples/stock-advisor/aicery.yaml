@@ -1,0 +1,23 @@
+# StockPilot showcase workspace — Aicery runtime config (taslak)
+runtime_url: http://localhost:8000
+workspace_id: stock-advisor-demo
+
+provider:
+  # BYOK — kullanıcı kendi key'ini CLI veya cloud'da tanımlar
+  default_capability: deep_reasoning
+  preferred: openai
+
+limits:
+  max_tool_calls: 15
+  max_graph_steps: 20
+
+tools_allowlist:
+  - get_stock
+  - get_sales_velocity
+  - search_suppliers
+  - suggest_promo
+  - read_file
+  - search_workspace
+
+data_paths:
+  - ./data

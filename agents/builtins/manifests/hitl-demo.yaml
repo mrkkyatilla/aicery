@@ -1,0 +1,11 @@
+id: hitl-demo
+version: "1.0.0"
+description: Demonstrates human-in-the-loop approval before a risky tool runs.
+tools:
+  - name: hitl_probe
+    requires_approval: true
+graph: graphs.echo:build_graph
+system_prompt: "HITL demo agent."
+model:
+  provider: gemini
+  name: gemini-2.5-flash

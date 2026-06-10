@@ -1,0 +1,50 @@
+[
+  {
+    "id": "email_basic",
+    "input": "Contact me at alice@example.com for details.",
+    "must_not_contain": ["alice@example.com"],
+    "must_contain": ["[[PII_EMAIL_0]]"]
+  },
+  {
+    "id": "tc_kimlik",
+    "input": "Kimlik numaram 12345678901 lütfen saklayın.",
+    "must_not_contain": ["12345678901"],
+    "must_contain": ["[[PII_TC_KIMLIK_0]]"]
+  },
+  {
+    "id": "wallet",
+    "input": "Send ETH to 0xAbCdEf1234567890AbCdEf1234567890AbCdEf12",
+    "must_not_contain": ["0xAbCdEf1234567890AbCdEf1234567890AbCdEf12"],
+    "must_contain": ["[[PII_WALLET_0]]"]
+  },
+  {
+    "id": "sk_key",
+    "input": "Use sk-abcdefghijklmnopqrstuvwxyz123456 for auth.",
+    "must_not_contain": ["sk-abcdefghijklmnopqrstuvwxyz123456"],
+    "must_contain": ["[[PII_API_KEY_0]]"]
+  },
+  {
+    "id": "api_key_kv",
+    "input": "Header: api_key=supersecretkey12345678",
+    "must_not_contain": ["supersecretkey12345678"],
+    "must_contain": ["[[PII_API_KEY_0]]"]
+  },
+  {
+    "id": "multi_entity",
+    "input": "Email bob@test.org and TC 98765432109 with sk-xyz9876543210abcdefghij.",
+    "must_not_contain": ["bob@test.org", "98765432109", "sk-xyz9876543210abcdefghij"],
+    "must_contain": ["[[PII_EMAIL_0]]", "[[PII_TC_KIMLIK_1]]", "[[PII_API_KEY_2]]"]
+  },
+  {
+    "id": "roundtrip",
+    "input": "My email is carol@corp.io",
+    "response_with_placeholder": "We saved [[PII_EMAIL_0]] in the vault.",
+    "expected_unmasked": "We saved carol@corp.io in the vault."
+  },
+  {
+    "id": "no_pii",
+    "input": "Summarize the quarterly report without personal data.",
+    "must_not_contain": ["[[PII_"],
+    "must_contain": ["quarterly report"]
+  }
+]

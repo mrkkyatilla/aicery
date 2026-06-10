@@ -1,0 +1,40 @@
+{
+  "plugins": [
+    {
+      "id": "workspace-analyst",
+      "slug": "workspace-analyst",
+      "name": "AskMyCorp",
+      "type": "showcase",
+      "version": "1.0.0",
+      "description": "Index corporate policies and answer with the research agent (workspace showcase).",
+      "trust_level": "verified",
+      "author": "aicery",
+      "tags": ["research", "index", "policies"],
+      "example_path": "examples/workspace-analyst"
+    },
+    {
+      "id": "stock-advisor",
+      "slug": "stock-advisor",
+      "name": "StockPilot",
+      "type": "showcase",
+      "version": "1.0.0",
+      "description": "StockPilot showcase: inventory-advisor agent with get_stock, search_suppliers, and custom tools via PLUGIN_PATHS.",
+      "trust_level": "verified",
+      "author": "aicery",
+      "tags": ["research", "index", "inventory"],
+      "example_path": "examples/stock-advisor"
+    },
+    {
+      "id": "research",
+      "slug": "research",
+      "name": "Research",
+      "type": "agent",
+      "version": "1.0.0",
+      "description": "Builtin workspace research agent with search_workspace and read_file.",
+      "trust_level": "verified",
+      "author": "aicery",
+      "tags": ["agent", "research", "builtin"],
+      "example_path": null
+    }
+  ]
+}

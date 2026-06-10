@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aicery Billing</title>
+  <link rel="stylesheet" href="/ui/billing/styles.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <div>
+        <p class="eyebrow">Aicery Control Plane</p>
+        <h1>Billing &amp; usage</h1>
+      </div>
+      <button type="button" id="btn-refresh" class="btn secondary">Refresh</button>
+    </header>
+
+    <section class="card" id="auth-card">
+      <h2>API key</h2>
+      <p class="muted">Tenant key from <code>gateway_bootstrap.sh</code> (header <code>X-Api-Key</code>).</p>
+      <div class="row">
+        <input type="password" id="api-key" placeholder="aic_…" autocomplete="off" />
+        <button type="button" id="btn-save-key" class="btn primary">Connect</button>
+        <button type="button" id="btn-clear-key" class="btn secondary">Clear</button>
+      </div>
+      <p id="auth-error" class="error hidden"></p>
+    </section>
+
+    <section class="card hidden" id="dashboard">
+      <div class="org-head">
+        <div>
+          <h2 id="org-name">—</h2>
+          <p class="muted">Org <code id="org-id">—</code></p>
+        </div>
+        <span class="tier-badge" id="tier-badge">free</span>
+      </div>
+
+      <dl class="meta-grid">
+        <div><dt>Subscription</dt><dd id="sub-status">—</dd></div>
+        <div><dt>Period ends</dt><dd id="period-end">—</dd></div>
+        <div><dt>Stripe customer</dt><dd id="stripe-customer">—</dd></div>
+      </dl>
+
+      <h3>Usage this month</h3>
+      <div class="usage-block" id="usage-agent">
+        <div class="usage-label"><span>Agent runs</span><span id="usage-agent-text">0 / 0</span></div>
+        <div class="bar"><div class="bar-fill" id="bar-agent"></div></div>
+      </div>
+      <div class="usage-block" id="usage-tokens">
+        <div class="usage-label"><span>LLM tokens (out)</span><span id="usage-tokens-text">0 / 0</span></div>
+        <div class="bar"><div class="bar-fill" id="bar-tokens"></div></div>
+      </div>
+
+      <h3>Upgrade</h3>
+      <p class="muted">Opens Stripe Checkout when <code>STRIPE_SECRET_KEY</code> is configured on the gateway.</p>
+      <div class="row upgrade-row">
+        <button type="button" class="btn primary" data-tier="pro">Upgrade to Pro</button>
+        <button type="button" class="btn secondary" data-tier="team">Upgrade to Team</button>
+      </div>
+      <p id="checkout-error" class="error hidden"></p>
+    </section>
+
+    <footer class="footer muted">
+      <a href="/ui/billing">Dashboard</a> · API <code>GET /billing/me</code>
+    </footer>
+  </div>
+  <script src="/ui/billing/app.js"></script>
+</body>
+</html>

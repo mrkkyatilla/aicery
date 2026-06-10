@@ -1,0 +1,9 @@
+{
+  "SKU-42": [
+    { "vendor": "Alpha Supply", "price": 18.5, "currency": "USD", "lead_days": 5 },
+    { "vendor": "Beta Wholesale", "price": 17.2, "currency": "USD", "lead_days": 12 }
+  ],
+  "SKU-17": [
+    { "vendor": "CableCo", "price": 2.1, "currency": "USD", "lead_days": 3 }
+  ]
+}

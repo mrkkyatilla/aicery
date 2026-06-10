@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "tool_name": { "type": "string" },
+    "arguments_hash": { "type": "string" },
+    "duration_ms": { "type": "integer", "minimum": 0 },
+    "success": { "type": "boolean" },
+    "error_code": { "type": ["string", "null"] }
+  },
+  "required": ["tool_name", "arguments_hash", "duration_ms", "success"],
+  "additionalProperties": false
+}

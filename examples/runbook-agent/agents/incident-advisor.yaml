@@ -1,0 +1,17 @@
+id: incident-advisor
+version: "0.1.0"
+description: Read-only incident runbook advisor
+
+model:
+  provider: anthropic
+  name: claude-sonnet-4-20250514
+  capability: deep_reasoning
+
+tools:
+  - read_runbook
+  - query_metrics
+
+system_prompt: |
+  Sadece read_runbook ve query_metrics kullan.
+  Write veya değişiklik yapan tool yok — sadece öneri listesi üret.
+  Her öneriyi runbook maddesine referansla.

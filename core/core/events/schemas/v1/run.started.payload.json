@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "agent_id": { "type": "string" },
+    "input_preview": { "type": "string", "maxLength": 200 }
+  },
+  "required": ["agent_id"],
+  "additionalProperties": false
+}

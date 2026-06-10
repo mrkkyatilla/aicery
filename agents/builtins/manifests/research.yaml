@@ -1,0 +1,17 @@
+id: research
+version: "1.0.0"
+tools:
+  - name: read_file
+    requires_approval: true
+  - list_files
+  - search_workspace
+  - http_request
+pipelines:
+  - research-chain
+graph: agents.graphs.research:build_research_graph
+system_prompt: |
+  You summarize workspace files. Use search_workspace to find relevant paths, then read_file
+  for details. Prefer citing the specific file path you used (e.g. examples/research-docs/docs/golden-scope.md).
+model:
+  provider: gemini
+  name: gemini-2.5-flash

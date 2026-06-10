@@ -1,0 +1,4 @@
+runtime_url: http://localhost:8000
+api_key_file: .aicery/api_key
+default_agent: echo
+workspace_id: local
