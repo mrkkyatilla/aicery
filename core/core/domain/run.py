@@ -31,6 +31,7 @@ class RunCreate(BaseModel):
     agent_id: str = Field(min_length=1)
     input_text: str
     workspace_id: str | None = None
+    host_workspace_root: str | None = None
     pipeline_id: str | None = None
     conversation_id: str | None = None
     provider_policy: ProviderPolicy | None = None
@@ -44,6 +45,7 @@ class Run(BaseModel):
     agent_id: str = Field(min_length=1)
     input_text: str
     workspace_id: str | None = None
+    host_workspace_root: str | None = None
     pipeline_id: str | None = None
     conversation_id: str | None = None
     provider_policy: ProviderPolicy | None = None

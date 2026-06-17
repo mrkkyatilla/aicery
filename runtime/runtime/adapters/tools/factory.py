@@ -15,6 +15,7 @@ def build_tool_executor(
     agent_id: str,
     *,
     pipeline_id: str | None = None,
+    workspace_root: str | None = None,
     replay_ctx: ReplayContext | None = None,
     trace_recorder: TraceRecorder | None = None,
     trace_session=None,
@@ -34,13 +35,14 @@ def build_tool_executor(
         return MockToolExecutor(steps, trace_recorder=trace_recorder)
 
     settings = Settings()
+    root = workspace_root or settings.workspace_root
     try:
         allowed = get_allowed_tools(agent_id)
     except AgentManifestError:
         allowed = []
 
     executor: ToolExecutorPort = PersistingToolExecutor(
-        workspace_root=settings.workspace_root,
+        workspace_root=root,
         allowed_tools=allowed,
         agent_id=agent_id,
     )

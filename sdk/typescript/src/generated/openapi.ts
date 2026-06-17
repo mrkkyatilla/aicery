@@ -38,6 +38,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/marketplace/plugins": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Plugins */
+        get: operations["list_plugins_v1_marketplace_plugins_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/route": {
         parameters: {
             query?: never;
@@ -271,6 +288,40 @@ export interface components {
             /** Provider */
             provider: string;
         };
+        /** PluginCard */
+        PluginCard: {
+            /** Author */
+            author: string;
+            /** Description */
+            description: string;
+            /** Example Path */
+            example_path?: string | null;
+            /** Id */
+            id: string;
+            /** Name */
+            name: string;
+            /** Slug */
+            slug: string;
+            /** Tags */
+            tags?: string[];
+            /**
+             * Trust Level
+             * @enum {string}
+             */
+            trust_level: "verified" | "community";
+            /**
+             * Type
+             * @enum {string}
+             */
+            type: "showcase" | "agent" | "workflow" | "plugin";
+            /** Version */
+            version: string;
+        };
+        /** PluginListResponse */
+        PluginListResponse: {
+            /** Plugins */
+            plugins: components["schemas"]["PluginCard"][];
+        };
         /** ProviderPolicyBody */
         ProviderPolicyBody: {
             embedding?: components["schemas"]["ModelRefBody"] | null;
@@ -466,6 +517,38 @@ export interface operations {
                     "application/json": {
                         [key: string]: unknown;
                     };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_plugins_v1_marketplace_plugins_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                Authorization?: string | null;
+                "X-API-Key"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PluginListResponse"];
                 };
             };
             /** @description Validation Error */

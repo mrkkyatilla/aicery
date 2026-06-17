@@ -17,6 +17,7 @@ class RunORM(Base):
     agent_id: Mapped[str] = mapped_column(String(128), nullable=False)
     input_text: Mapped[str] = mapped_column(Text, nullable=False)
     workspace_id: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    host_workspace_root: Mapped[str | None] = mapped_column(String(512), nullable=True)
     pipeline_id: Mapped[str | None] = mapped_column(String(128), nullable=True)
     conversation_id: Mapped[str | None] = mapped_column(String(128), nullable=True, index=True)
     provider_policy: Mapped[dict | None] = mapped_column(JSON, nullable=True)

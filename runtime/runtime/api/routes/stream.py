@@ -101,9 +101,14 @@ async def _sse_event_stream(
                 break
             run = await service.get_run(run_id)
             if run and run.status.value in ("completed", "failed", "cancelled"):
+                payload = {"status": run.status.value, "run_id": run_id}
+                if run.error_message:
+                    payload["error_message"] = run.error_message
+                if run.error_code:
+                    payload["error_code"] = run.error_code
                 yield {
                     "event": "done",
-                    "data": json.dumps({"status": run.status.value, "run_id": run_id}),
+                    "data": json.dumps(payload),
                 }
                 break
             continue

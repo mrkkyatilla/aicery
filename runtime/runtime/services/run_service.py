@@ -411,6 +411,8 @@ class RunService:
                         "type": "done",
                         "status": (run.status.value if run else "failed"),
                         "run_id": run_id,
+                        "error_message": run.error_message if run else None,
+                        "error_code": run.error_code if run else None,
                     }
                 )
                 remove_run(run_id)

@@ -21,6 +21,7 @@ class CreateRunRequest(BaseModel):
     agent_id: str | None = None
     input: str
     workspace_id: str | None = None
+    host_workspace_root: str | None = None
     pipeline: str | None = None
     conversation_id: str | None = None
     execute: bool = True
@@ -82,6 +83,7 @@ async def create_run(body: CreateRunRequest, service: RunServiceDep) -> RunRespo
             agent_id=agent_id,
             input_text=body.input,
             workspace_id=body.workspace_id,
+            host_workspace_root=body.host_workspace_root,
             pipeline_id=body.pipeline,
             conversation_id=body.conversation_id,
             provider_policy=resolved,

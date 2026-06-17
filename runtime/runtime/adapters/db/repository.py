@@ -15,6 +15,7 @@ def _to_domain(row: RunORM) -> Run:
         agent_id=row.agent_id,
         input_text=row.input_text,
         workspace_id=row.workspace_id,
+        host_workspace_root=row.host_workspace_root,
         pipeline_id=row.pipeline_id,
         conversation_id=row.conversation_id,
         provider_policy=policy_from_dict(row.provider_policy),
@@ -33,6 +34,7 @@ def _to_orm(run: Run) -> RunORM:
         agent_id=run.agent_id,
         input_text=run.input_text,
         workspace_id=run.workspace_id,
+        host_workspace_root=run.host_workspace_root,
         pipeline_id=run.pipeline_id,
         conversation_id=run.conversation_id,
         provider_policy=policy_to_dict(run.provider_policy),
@@ -54,6 +56,7 @@ class RunRepository:
             agent_id=data.agent_id,
             input_text=data.input_text,
             workspace_id=data.workspace_id,
+            host_workspace_root=data.host_workspace_root,
             pipeline_id=data.pipeline_id,
             conversation_id=data.conversation_id,
             provider_policy=data.provider_policy,
@@ -84,6 +87,7 @@ class RunRepository:
         row.agent_id = run.agent_id
         row.input_text = run.input_text
         row.workspace_id = run.workspace_id
+        row.host_workspace_root = run.host_workspace_root
         row.pipeline_id = run.pipeline_id
         row.conversation_id = run.conversation_id
         row.provider_policy = policy_to_dict(run.provider_policy)

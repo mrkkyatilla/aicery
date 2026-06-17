@@ -93,14 +93,16 @@ class LangGraphOrchestrator:
             }
             return
 
+        run = run.model_copy(update={"agent_id": agent_id})
+
         tools = build_tool_executor(
             agent_id,
             pipeline_id=pipeline,
+            workspace_root=run.host_workspace_root,
             replay_ctx=self._replay_ctx,
             trace_recorder=self._trace,
             trace_session=self._trace_session,
         )
-        run = run.model_copy(update={"agent_id": agent_id})
 
         if pipeline == "research-chain":
             async for event in self._stream_chain(run, tools, builder):
@@ -122,16 +124,18 @@ class LangGraphOrchestrator:
                 yield event
             return
 
-        if agent_id == "inventory-advisor":
-            async for event in self._stream_inventory_advisor(run, tools, builder):
-                yield event
-            return
-
-        yield {
-            "type": "error",
-            "error_code": "UNKNOWN_AGENT",
-            "message": f"No stream handler for {agent_id}",
-        }
+        async for event in self._stream_graph(
+            run,
+            tools,
+            builder,
+            graph_name=agent_id,
+            initial_state={
+                "messages": [{"role": "user", "content": run.input_text}],
+                "artifacts": {},
+                "step_index": 0,
+            },
+        ):
+            yield event
 
     async def _stream_graph(
         self,
@@ -246,19 +250,6 @@ class LangGraphOrchestrator:
             tools,
             builder,
             graph_name="hitl-demo",
-            initial_state={
-                "messages": [{"role": "user", "content": run.input_text}],
-                "step_index": 0,
-            },
-        ):
-            yield event
-
-    async def _stream_inventory_advisor(self, run: Run, tools, builder) -> AsyncIterator[dict]:
-        async for event in self._stream_graph(
-            run,
-            tools,
-            builder,
-            graph_name="inventory-advisor",
             initial_state={
                 "messages": [{"role": "user", "content": run.input_text}],
                 "step_index": 0,

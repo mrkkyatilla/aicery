@@ -17,15 +17,15 @@ def chunk_to_sse(chunk: dict) -> dict[str, str]:
             ),
         }
     if chunk_type == "done":
-        return {
-            "event": "done",
-            "data": json.dumps(
-                {
-                    "status": chunk.get("status", "completed"),
-                    "run_id": chunk.get("run_id", ""),
-                }
-            ),
+        payload = {
+            "status": chunk.get("status", "completed"),
+            "run_id": chunk.get("run_id", ""),
         }
+        if chunk.get("error_message"):
+            payload["error_message"] = chunk["error_message"]
+        if chunk.get("error_code"):
+            payload["error_code"] = chunk["error_code"]
+        return {"event": "done", "data": json.dumps(payload)}
     if chunk_type == "error":
         return {
             "event": "error",
