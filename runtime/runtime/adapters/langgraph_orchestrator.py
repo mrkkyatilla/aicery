@@ -21,8 +21,11 @@ from runtime.services.hot_memory_hooks import (
     build_messages_with_history_async,
     memory_key_for_run,
 )
+from runtime.adapters.providers.usage_helpers import estimate_usage
 from runtime.services.trace_recorder import TraceRecorder
 from tools.registry.executor import ToolNotFound, ToolPermissionDenied, ToolTimeout
+
+_SKIP_ON_COMPLETE_LLM = frozenset({"echo", "research"})
 
 
 class LangGraphOrchestrator:
@@ -210,8 +213,11 @@ class LangGraphOrchestrator:
             chunk_size = 40 if graph_name == "research-chain" else 20
             for i in range(0, len(text), chunk_size):
                 yield {"type": "token", "text": text[i : i + chunk_size]}
-            if graph_name == "research-chain" and self._trace:
-                usage = self._pop_provider_usage()
+            if not self._trace or graph_name in _SKIP_ON_COMPLETE_LLM or not text:
+                return
+
+            usage = self._pop_provider_usage()
+            if graph_name == "research-chain":
                 llm_messages = [
                     {"role": "system", "content": "Summarize for the user."},
                     {
@@ -219,14 +225,30 @@ class LangGraphOrchestrator:
                         "content": str(final.get("artifacts", {}).get("content", run.input_text))[:8000],
                     },
                 ]
-                self._trace.record_llm(
-                    run_id=run.id,
-                    name="chain.summarizer",
-                    messages=llm_messages,
-                    output=text,
+                llm_name = "chain.summarizer"
+            else:
+                llm_messages = [m for m in messages if m.get("role") in ("system", "user")]
+                if not llm_messages:
+                    llm_messages = [{"role": "user", "content": run.input_text or ""}]
+                llm_name = f"{graph_name}.complete"
+
+            if usage is None:
+                provider_name = self._llm_ref.provider if self._llm_ref else "mock"
+                usage = estimate_usage(
+                    llm_messages,
+                    text,
+                    provider=provider_name,
                     model=self._resolved_model(),
-                    usage=usage,
                 )
+
+            self._trace.record_llm(
+                run_id=run.id,
+                name=llm_name,
+                messages=llm_messages,
+                output=text,
+                model=self._resolved_model(),
+                usage=usage,
+            )
 
         return on_complete
 

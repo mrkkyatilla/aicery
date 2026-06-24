@@ -98,3 +98,34 @@ def test_echo_run_trace_includes_usage(usage_client):
     assert llm_steps
     assert llm_steps[0]["usage"] is not None
     assert llm_steps[0]["usage"]["tokens_out"] >= 1
+
+
+def test_plugin_graph_run_trace_includes_usage(usage_client):
+    """LangGraph plugin agents (forecaster, quant, inventory-advisor, ...) meter LLM on complete."""
+    client, _engine = usage_client
+    created = client.post(
+        "/v1/runs",
+        json={
+            "agent_id": "inventory-advisor",
+            "input": "SKU-42 stok durumu",
+            "execute": True,
+        },
+        headers={"X-API-Key": "dev"},
+    )
+    assert created.status_code == 201, created.text
+    run_id = created.json()["id"]
+    for _ in range(120):
+        body = client.get(f"/v1/runs/{run_id}", headers={"X-API-Key": "dev"}).json()
+        if body["status"] in ("completed", "failed", "cancelled"):
+            break
+    assert body["status"] == "completed", body
+
+    usage = client.get(f"/v1/runs/{run_id}/usage", headers={"X-API-Key": "dev"}).json()
+    assert usage["llm_calls"] >= 1
+    assert usage["tokens_in"] >= 1
+    assert usage["tokens_out"] >= 1
+
+    trace = client.get(f"/v1/runs/{run_id}/trace", headers={"X-API-Key": "dev"}).json()
+    llm_steps = [s for s in trace["steps"] if s["type"] == "llm"]
+    assert llm_steps
+    assert llm_steps[0]["usage"] is not None
