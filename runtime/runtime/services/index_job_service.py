@@ -36,6 +36,7 @@ class IndexJobService:
         paths: list[str],
         *,
         workspace_root: str | None = None,
+        file_metadata: dict[str, dict[str, str]] | None = None,
     ) -> str:
         job_id = uuid.uuid4()
         now = datetime.now(UTC)
@@ -45,12 +46,21 @@ class IndexJobService:
                     id=job_id,
                     workspace_id=workspace_id,
                     paths=paths,
+                    file_metadata_json=file_metadata or {},
                     status="pending",
                     created_at=now,
                 )
             )
             session.commit()
-        asyncio.create_task(self._run_job(job_id, workspace_id, paths, workspace_root=workspace_root))
+        asyncio.create_task(
+            self._run_job(
+                job_id,
+                workspace_id,
+                paths,
+                workspace_root=workspace_root,
+                file_metadata=file_metadata,
+            )
+        )
         return str(job_id)
 
     async def get_job(self, job_id: str) -> IndexJobStatus | None:
@@ -84,13 +94,19 @@ class IndexJobService:
         paths: list[str],
         *,
         workspace_root: str | None,
+        file_metadata: dict[str, dict[str, str]] | None = None,
     ) -> None:
         if job_id in self._running:
             return
         self._running.add(job_id)
         self._update_status(job_id, "running")
         try:
-            result = await index_workspace(workspace_id, paths, workspace_root=workspace_root)
+            result = await index_workspace(
+                workspace_id,
+                paths,
+                workspace_root=workspace_root,
+                file_metadata=file_metadata,
+            )
             self._complete(job_id, result)
         except Exception as exc:
             logger.exception("Index job %s failed", job_id)

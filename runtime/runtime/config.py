@@ -81,3 +81,8 @@ class Settings(BaseSettings):
     compactor_char_threshold: int = 8000
     execute_code_enabled: bool = False
     sandbox_runner_url: str = "http://localhost:8091"
+    importance_boost_low: float = 1.0
+    importance_boost_medium: float = 1.0
+    importance_boost_high: float = 1.25
+    importance_boost_critical: float = 1.5
+    importance_search_oversample: int = 3

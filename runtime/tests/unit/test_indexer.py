@@ -32,6 +32,30 @@ def test_workspace_indexer_counts_files_and_chunks(tmp_path: Path, monkeypatch):
     assert "docs/b.py" in paths
 
 
+def test_workspace_indexer_applies_file_metadata(tmp_path: Path, monkeypatch):
+    monkeypatch.setenv("USE_MOCK_PROVIDER", "true")
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    docs = tmp_path / "docs"
+    docs.mkdir()
+    (docs / "policy.md").write_text("operation criteria\n" * 20)
+
+    memory = _MemoryStub()
+    meta = {
+        "docs/policy.md": {
+            "document_id": "doc-1",
+            "category": "policy",
+            "importance": "critical",
+        }
+    }
+    indexer = WorkspaceIndexer(memory, str(tmp_path), file_metadata=meta)  # type: ignore[arg-type]
+    indexer.index("test-ws", ["docs/policy.md"])
+
+    assert memory.chunks
+    assert memory.chunks[0].metadata["document_id"] == "doc-1"
+    assert memory.chunks[0].metadata["category"] == "policy"
+    assert memory.chunks[0].metadata["importance"] == "critical"
+
+
 def test_workspace_indexer_missing_path_raises(tmp_path: Path, monkeypatch):
     monkeypatch.setenv("USE_MOCK_PROVIDER", "true")
     monkeypatch.delenv("GEMINI_API_KEY", raising=False)

@@ -14,7 +14,11 @@ def chunks_to_hits(chunks: list[Chunk]) -> list[dict]:
     for chunk in chunks:
         line = int(chunk.metadata.get("chunk_index", 0)) + 1
         snippet = chunk.text[:200].replace("\n", " ")
-        hits.append({"file": chunk.path, "line": line, "text": snippet})
+        hit = {"file": chunk.path, "line": line, "text": snippet}
+        for key in ("importance", "category", "document_id"):
+            if key in chunk.metadata:
+                hit[key] = chunk.metadata[key]
+        hits.append(hit)
     return hits
 
 

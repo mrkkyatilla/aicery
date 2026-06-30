@@ -27,11 +27,13 @@ class WorkspaceIndexer:
         workspace_root: str,
         *,
         blob_store=None,
+        file_metadata: dict[str, dict[str, str]] | None = None,
     ) -> None:
         self._memory = memory
         self._workspace_root = Path(workspace_root).resolve()
         self._embedder = get_embedder()
         self._blob_store = blob_store
+        self._file_metadata = file_metadata or {}
         settings = Settings()
         self._batch_size = settings.index_embed_batch_size
 
@@ -93,6 +95,7 @@ class WorkspaceIndexer:
         flush,
     ) -> bool:
         rel = str(file_path.relative_to(self._workspace_root))
+        meta = dict(self._file_metadata.get(rel, {}))
         try:
             raw = file_path.read_bytes()
             text = raw.decode("utf-8", errors="ignore")
@@ -114,7 +117,7 @@ class WorkspaceIndexer:
                     path=rel,
                     text=piece,
                     embedding=vector,
-                    metadata={"chunk_index": index},
+                    metadata={"chunk_index": index, **meta},
                 )
             )
             if len(batch) >= batch_size:
@@ -140,6 +143,7 @@ async def index_workspace(
     paths: list[str],
     *,
     workspace_root: str | None = None,
+    file_metadata: dict[str, dict[str, str]] | None = None,
 ) -> IndexResult:
     import asyncio
 
@@ -153,5 +157,5 @@ async def index_workspace(
         raise RuntimeError("Semantic search unavailable (Qdrant disabled or down)")
     root = workspace_root or settings.workspace_root
     blob_store = get_blob_store()
-    indexer = WorkspaceIndexer(memory, root, blob_store=blob_store)
+    indexer = WorkspaceIndexer(memory, root, blob_store=blob_store, file_metadata=file_metadata)
     return await asyncio.to_thread(indexer.index, workspace_id, paths)

@@ -16,6 +16,7 @@ router = APIRouter(
 class IndexWorkspaceRequest(BaseModel):
     workspace_id: str = Field(default="local")
     paths: list[str] = Field(default_factory=lambda: ["guide/"])
+    file_metadata: dict[str, dict[str, str]] = Field(default_factory=dict)
 
 
 class IndexWorkspaceResponse(BaseModel):
@@ -59,6 +60,7 @@ async def index_workspace_route(
             body.workspace_id,
             body.paths,
             workspace_root=settings.workspace_root,
+            file_metadata=body.file_metadata,
         )
         payload = IndexJobAcceptedResponse(job_id=job_id)
         return JSONResponse(
@@ -73,6 +75,7 @@ async def index_workspace_route(
             body.workspace_id,
             body.paths,
             workspace_root=settings.workspace_root,
+            file_metadata=body.file_metadata,
         )
     except FileNotFoundError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc

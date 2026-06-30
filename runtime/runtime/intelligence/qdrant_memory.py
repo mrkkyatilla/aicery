@@ -68,8 +68,9 @@ class QdrantSemanticMemory:
     def search(self, workspace_id: str, query: str, top_k: int = 5) -> list[Chunk]:
         from qdrant_client.models import FieldCondition, Filter, MatchValue
 
+        settings = Settings()
+        oversample = max(top_k, top_k * settings.importance_search_oversample)
         client = self._get_client()
-        embedder = None
         from runtime.intelligence.embeddings import get_embedder
 
         embedder = get_embedder()
@@ -77,24 +78,36 @@ class QdrantSemanticMemory:
         results = client.search(
             collection_name=self._collection,
             query_vector=vector,
-            limit=top_k,
+            limit=oversample,
             query_filter=Filter(
                 must=[FieldCondition(key="workspace_id", match=MatchValue(value=workspace_id))]
             ),
         )
-        chunks: list[Chunk] = []
+        boosted: list[tuple[float, Chunk]] = []
         for hit in results:
             payload = hit.payload or {}
-            chunks.append(
-                Chunk(
-                    chunk_id=str(payload.get("chunk_id", hit.id)),
-                    workspace_id=str(payload.get("workspace_id", workspace_id)),
-                    path=str(payload.get("path", "")),
-                    text=str(payload.get("text", "")),
-                    metadata={k: v for k, v in payload.items() if k not in ("chunk_id", "workspace_id", "path", "text")},
+            importance = str(payload.get("importance", "medium"))
+            boost = _importance_boost(importance, settings)
+            score = float(hit.score) * boost
+            chunks_meta = {
+                k: v
+                for k, v in payload.items()
+                if k not in ("chunk_id", "workspace_id", "path", "text")
+            }
+            boosted.append(
+                (
+                    score,
+                    Chunk(
+                        chunk_id=str(payload.get("chunk_id", hit.id)),
+                        workspace_id=str(payload.get("workspace_id", workspace_id)),
+                        path=str(payload.get("path", "")),
+                        text=str(payload.get("text", "")),
+                        metadata=chunks_meta,
+                    ),
                 )
             )
-        return chunks
+        boosted.sort(key=lambda item: item[0], reverse=True)
+        return [chunk for _, chunk in boosted[:top_k]]
 
     async def upsert_chunks_async(self, chunks: list[Chunk]) -> None:
         await asyncio.to_thread(self.upsert_chunks, chunks)
@@ -106,6 +119,16 @@ class QdrantSemanticMemory:
 def _chunk_point_id(chunk_id: str) -> str:
     """Stable UUID from chunk_id for idempotent upsert."""
     return str(uuid.uuid5(uuid.NAMESPACE_URL, chunk_id))
+
+
+def _importance_boost(importance: str, settings) -> float:
+    mapping = {
+        "low": settings.importance_boost_low,
+        "medium": settings.importance_boost_medium,
+        "high": settings.importance_boost_high,
+        "critical": settings.importance_boost_critical,
+    }
+    return mapping.get(importance, settings.importance_boost_medium)
 
 
 def get_qdrant_memory() -> QdrantSemanticMemory | None:

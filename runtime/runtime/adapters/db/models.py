@@ -55,6 +55,7 @@ class IndexJobORM(Base):
     id: Mapped[uuid.UUID] = mapped_column(Uuid, primary_key=True)
     workspace_id: Mapped[str] = mapped_column(String(128), nullable=False, index=True)
     paths: Mapped[list] = mapped_column(JSON, nullable=False)
+    file_metadata_json: Mapped[dict | None] = mapped_column(JSON, nullable=True)
     status: Mapped[str] = mapped_column(String(32), nullable=False, index=True)
     result_json: Mapped[dict | None] = mapped_column(JSON, nullable=True)
     error_message: Mapped[str | None] = mapped_column(Text, nullable=True)
